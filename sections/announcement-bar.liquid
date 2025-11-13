@@ -1,0 +1,136 @@
+{% comment %}
+  Announcement Bar Section (Optional)
+  Save as: sections/announcement-bar.liquid
+  This appears above the header with important announcements
+{% endcomment %}
+
+{% if section.settings.show_announcement %}
+<style>
+  .announcement-bar {
+    background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    padding: 10px 0;
+    text-align: center;
+    font-size: 14px;
+    position: relative;
+  }
+  
+  .announcement-bar a {
+    color: inherit;
+    text-decoration: underline;
+  }
+  
+  .announcement-bar a:hover {
+    opacity: 0.8;
+  }
+  
+  .announcement-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .announcement-icon {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .announcement-close {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 5px;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+  }
+  
+  .announcement-close:hover {
+    opacity: 1;
+  }
+  
+  @media (max-width: 768px) {
+    .announcement-bar {
+      font-size: 13px;
+      padding: 12px 40px 12px 20px;
+    }
+  }
+</style>
+
+<div class="announcement-bar">
+  <div class="container">
+    <div class="announcement-content">
+      {% if section.settings.show_icon %}
+        <svg class="announcement-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+        </svg>
+      {% endif %}
+      <div>{{ section.settings.announcement_text }}</div>
+    </div>
+    {% if section.settings.show_close %}
+      <button class="announcement-close" onclick="this.parentElement.style.display='none'; sessionStorage.setItem('announcement-closed', 'true');">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  // Check if announcement was closed
+  if (sessionStorage.getItem('announcement-closed')) {
+    document.querySelector('.announcement-bar').style.display = 'none';
+  }
+</script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show Announcement Bar",
+      "default": true
+    },
+    {
+      "type": "html",
+      "id": "announcement_text",
+      "label": "Announcement Text",
+      "default": "🎉 Free shipping on orders over $75! <a href='/collections/all'>Shop Now</a>"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#C9A961"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Show Icon",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_close",
+      "label": "Show Close Button",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
