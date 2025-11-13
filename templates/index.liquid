@@ -1,0 +1,215 @@
+{% comment %}
+  Homepage Template
+  Save as: templates/index.liquid
+{% endcomment %}
+
+<style>
+  .hero-section {
+    position: relative;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1548625149-fc4a29cf7092?w=1600') center/cover;
+  }
+  .hero-content { z-index: 1; max-width: 700px; padding: 0 20px; }
+  .hero-subtitle { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; color: var(--color-primary); }
+  .hero-title { font-size: 48px; margin-bottom: 15px; line-height: 1.2; }
+  .hero-description { font-size: 16px; margin-bottom: 30px; opacity: 0.9; line-height: 1.6; }
+  .hero-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+  
+  .featured-products { padding: 80px 0; background: white; }
+  .section-header { text-align: center; margin-bottom: 50px; }
+  .section-title { font-size: 36px; margin-bottom: 15px; color: var(--color-secondary); }
+  .section-description { font-size: 16px; color: #666; max-width: 600px; margin: 0 auto; }
+  
+  .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+  .product-card { position: relative; transition: transform 0.3s; }
+  .product-card:hover { transform: translateY(-5px); }
+  .product-image-wrapper { position: relative; overflow: hidden; border-radius: 8px; margin-bottom: 15px; aspect-ratio: 1; }
+  .product-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+  .product-card:hover .product-image { transform: scale(1.05); }
+  .product-badge { position: absolute; top: 10px; right: 10px; background: var(--color-primary); color: white; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+  .product-info { text-align: center; }
+  .product-title { font-size: 18px; margin-bottom: 8px; color: var(--color-secondary); }
+  .product-subtitle { font-size: 13px; color: #888; margin-bottom: 8px; }
+  .product-price { font-size: 20px; color: var(--color-primary); font-weight: bold; }
+  
+  .about-section { padding: 80px 0; background: var(--color-bg-light); }
+  .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .about-image { border-radius: 8px; overflow: hidden; }
+  .about-image img { width: 100%; height: 100%; object-fit: cover; }
+  .about-text h2 { font-size: 36px; margin-bottom: 20px; color: var(--color-secondary); }
+  .about-text p { font-size: 16px; line-height: 1.8; color: #666; margin-bottom: 15px; }
+  .about-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 30px; }
+  .feature-item { text-align: center; }
+  .feature-icon { width: 50px; height: 50px; margin: 0 auto 15px; background: var(--color-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; }
+  .feature-title { font-size: 14px; font-weight: bold; color: var(--color-secondary); }
+  
+  .testimonials-section { padding: 80px 0; background: white; }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 50px; }
+  .testimonial-card { background: var(--color-bg-light); padding: 30px; border-radius: 8px; }
+  .testimonial-text { font-size: 15px; line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+  .testimonial-author { font-weight: bold; color: var(--color-secondary); }
+  .testimonial-location { font-size: 13px; color: #888; }
+  
+  .cta-section { background: var(--color-secondary); color: white; padding: 80px 0; text-align: center; }
+  .cta-content h2 { font-size: 36px; margin-bottom: 15px; }
+  .cta-content p { font-size: 16px; margin-bottom: 30px; opacity: 0.9; }
+  
+  @media (max-width: 768px) {
+    .hero-title { font-size: 32px; }
+    .about-content { grid-template-columns: 1fr; }
+    .about-features { grid-template-columns: 1fr; }
+    .product-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+  }
+</style>
+
+<div class="hero-section">
+  <div class="hero-content">
+    <p class="hero-subtitle">AUTHENTIC HOLY LAND ARTIFACTS & GIFTS</p>
+    <h1 class="hero-title">From Jerusalem, With Blessings</h1>
+    <p class="hero-description">
+      Each creation carries the soul of Jerusalem — a sacred link between faith, craftsmanship, and devotion.
+    </p>
+    <div class="hero-buttons">
+      <a href="/collections/all" class="btn">Shop Now</a>
+      <a href="/pages/about" class="btn btn-secondary">Our Story</a>
+    </div>
+  </div>
+</div>
+
+<section class="featured-products">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Sacred Treasures from the Holy Land</h2>
+      <p class="section-description">
+        Handcrafted by Christian artisans in Jerusalem, each piece embodies centuries of devotion and carries a blessing from the sacred soil.
+      </p>
+    </div>
+    
+    <div class="product-grid">
+      {% for product in collections.all.products limit: 4 %}
+        <a href="{{ product.url }}" class="product-card">
+          <div class="product-image-wrapper">
+            {% if product.featured_image %}
+              <img src="{{ product.featured_image | img_url: '500x500' }}" alt="{{ product.title }}" class="product-image">
+            {% endif %}
+            {% if product.tags contains 'blessed' %}
+              <span class="product-badge">Blessed</span>
+            {% endif %}
+          </div>
+          <div class="product-info">
+            <h3 class="product-title">{{ product.title }}</h3>
+            <p class="product-subtitle">Handcrafted in Jerusalem</p>
+            <p class="product-price">{{ product.price | money }}</p>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+
+    <div style="text-align: center; margin-top: 50px;">
+      <a href="/collections/all" class="btn">View All Collections →</a>
+    </div>
+  </div>
+</section>
+
+<section class="about-section">
+  <div class="container">
+    <div class="about-content">
+      <div class="about-image">
+        <img src="https://images.unsplash.com/photo-1614935151651-0bea6508db6b?w=800" alt="Artisan crafting">
+      </div>
+      <div class="about-text">
+        <h2>From Jerusalem, With Devotion</h2>
+        <p>
+          Fatima Store brings you closer to the Holy Land through handcrafted gifts of faith — sourced from Bethlehem, blessed in Jerusalem, and cherished worldwide.
+        </p>
+        <p>
+          Our journey began in the streets of Jerusalem, where the scent of incense and the sound of prayer fill the air. We partner with Christian artisans whose families have crafted religious art for generations.
+        </p>
+        <p>
+          Every piece we offer is a work of devotion — an echo of the Holy Land's sacred beauty, carrying centuries of faith into your daily life.
+        </p>
+        <a href="/pages/about" class="btn" style="margin-top: 20px;">Read Our Full Story</a>
+      </div>
+    </div>
+
+    <div class="about-features">
+      <div class="feature-item">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <p class="feature-title">Certified Authentic</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        <p class="feature-title">Handcrafted with Love</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <p class="feature-title">Blessed in Jerusalem</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Voices of Faith</h2>
+      <p class="section-description">Hear from our community of believers</p>
+    </div>
+    
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <p class="testimonial-text">
+          "The olive wood cross I purchased carries such profound beauty and meaning. You can feel the devotion in every carved detail."
+        </p>
+        <p class="testimonial-author">Sarah M.</p>
+        <p class="testimonial-location">California</p>
+      </div>
+      
+      <div class="testimonial-card">
+        <p class="testimonial-text">
+          "Our parish ordered rosaries for confirmation gifts. The authenticity and craftsmanship exceeded all expectations."
+        </p>
+        <p class="testimonial-author">Father John</p>
+        <p class="testimonial-location">New York</p>
+      </div>
+      
+      <div class="testimonial-card">
+        <p class="testimonial-text">
+          "Owning a piece of Jerusalem has deepened my prayer life. Every time I hold my rosary, I feel connected to the Holy Land."
+        </p>
+        <p class="testimonial-author">Maria L.</p>
+        <p class="testimonial-location">Texas</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-content">
+      <h2>Bring the Holy Land into Your Home</h2>
+      <p>Each piece is not just made but lived — carrying centuries of prayer, devotion, and the sacred spirit of Jerusalem into your daily life.</p>
+      <a href="/collections/all" class="btn">Begin Your Journey</a>
+    </div>
+  </div>
+</section>

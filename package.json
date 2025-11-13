@@ -1,0 +1,37 @@
+{
+  "name": "fatima-store-theme",
+  "version": "1.0.0",
+  "description": "Shopify theme for Fatima Store - Authentic Holy Land gifts handcrafted by Christian artisans",
+  "main": "layout/theme.liquid",
+  "scripts": {
+    "dev": "shopify theme dev",
+    "push": "shopify theme push",
+    "pull": "shopify theme pull",
+    "check": "shopify theme check",
+    "share": "shopify theme share"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/fatima-store-theme.git"
+  },
+  "keywords": [
+    "shopify",
+    "theme",
+    "ecommerce",
+    "faith",
+    "religious",
+    "holy-land",
+    "jerusalem",
+    "artisan",
+    "gifts"
+  ],
+  "author": "Fatima Store",
+  "license": "MIT",
+  "devDependencies": {
+    "@shopify/cli": "^3.50.0",
+    "@shopify/theme": "^3.50.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

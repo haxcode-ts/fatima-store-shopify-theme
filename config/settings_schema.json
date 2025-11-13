@@ -1,0 +1,164 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Fatima Store",
+    "theme_version": "1.0.0",
+    "theme_author": "Fatima Store",
+    "theme_documentation_url": "https://fatimastore.com/docs",
+    "theme_support_url": "https://fatimastore.com/support"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primary Color (Gold)",
+        "default": "#C9A961"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "label": "Secondary Color (Brown)",
+        "default": "#4A3F35"
+      },
+      {
+        "type": "color",
+        "id": "color_bg_light",
+        "label": "Light Background (Cream)",
+        "default": "#FFF9ED"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text Color",
+        "default": "#333333"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "type_header_font",
+        "label": "Heading Font",
+        "default": "playfair_display_n7"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "label": "Body Font",
+        "default": "lato_n4"
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "32x32px PNG recommended"
+      }
+    ]
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook URL",
+        "info": "https://facebook.com/yourpage"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram URL",
+        "info": "https://instagram.com/yourprofile"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube_link",
+        "label": "YouTube URL",
+        "info": "https://youtube.com/yourchannel"
+      },
+      {
+        "type": "text",
+        "id": "social_email",
+        "label": "Email Address",
+        "info": "contact@yourstore.com"
+      }
+    ]
+  },
+  {
+    "name": "Store Information",
+    "settings": [
+      {
+        "type": "text",
+        "id": "store_name",
+        "label": "Store Name",
+        "default": "Fatima Store"
+      },
+      {
+        "type": "text",
+        "id": "store_tagline",
+        "label": "Store Tagline",
+        "default": "From Jerusalem, With Blessings"
+      },
+      {
+        "type": "textarea",
+        "id": "store_description",
+        "label": "Store Description",
+        "default": "Authentic Holy Land gifts handcrafted by Christian artisans in Jerusalem."
+      }
+    ]
+  },
+  {
+    "name": "Homepage Settings",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "hero_image",
+        "label": "Hero Background Image"
+      },
+      {
+        "type": "text",
+        "id": "hero_title",
+        "label": "Hero Title",
+        "default": "From Jerusalem, With Blessings"
+      },
+      {
+        "type": "textarea",
+        "id": "hero_description",
+        "label": "Hero Description",
+        "default": "Each creation carries the soul of Jerusalem — a sacred link between faith, craftsmanship, and devotion."
+      }
+    ]
+  },
+  {
+    "name": "Footer Settings",
+    "settings": [
+      {
+        "type": "text",
+        "id": "blessing_label",
+        "label": "Blessing Banner Label",
+        "default": "Blessing of the Day"
+      },
+      {
+        "type": "text",
+        "id": "blessing_text",
+        "label": "Blessing Text",
+        "default": "May the Lord bless you and keep you."
+      },
+      {
+        "type": "text",
+        "id": "copyright_text",
+        "label": "Copyright Text",
+        "default": "Authentic Holy Land Gifts — From Jerusalem to Your Home."
+      }
+    ]
+  }
+]

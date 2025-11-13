@@ -1,0 +1,265 @@
+{% comment %}
+  Product Page Template
+  Save as: templates/product.liquid
+{% endcomment %}
+
+<style>
+  .breadcrumb { padding: 20px 0; font-size: 14px; color: #666; }
+  .breadcrumb a { color: #666; transition: color 0.3s; }
+  .breadcrumb a:hover { color: var(--color-primary); }
+  
+  .product-section { padding: 40px 0 80px; }
+  .product-container { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+  .product-images { position: sticky; top: 100px; height: fit-content; }
+  .product-image-main { border-radius: 8px; overflow: hidden; margin-bottom: 20px; aspect-ratio: 1; }
+  .product-image-main img { width: 100%; height: 100%; object-fit: cover; }
+  
+  .product-thumbnails { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .product-thumbnail { border-radius: 4px; overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: border-color 0.3s; aspect-ratio: 1; }
+  .product-thumbnail:hover, .product-thumbnail.active { border-color: var(--color-primary); }
+  .product-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
+  
+  .product-info { padding-top: 20px; }
+  .product-badge-tag { display: inline-block; background: var(--color-bg-light); color: var(--color-primary); padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-bottom: 15px; }
+  .product-title { font-size: 36px; margin-bottom: 15px; color: var(--color-secondary); }
+  .product-price { font-size: 32px; color: var(--color-primary); margin-bottom: 25px; font-weight: bold; }
+  .product-description { font-size: 16px; line-height: 1.8; color: #666; margin-bottom: 30px; }
+  
+  .product-features { display: flex; gap: 30px; margin-bottom: 30px; padding: 20px 0; border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5; }
+  .product-feature { display: flex; align-items: center; gap: 10px; }
+  .product-feature-icon { width: 20px; height: 20px; color: var(--color-primary); }
+  .product-feature-text { font-size: 14px; color: var(--color-secondary); }
+  
+  .product-form { margin-bottom: 30px; }
+  .quantity-selector { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+  .quantity-label { font-weight: bold; color: var(--color-secondary); }
+  .quantity-input { display: flex; align-items: center; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; }
+  .quantity-input button { width: 40px; height: 40px; border: none; background: var(--color-bg-light); cursor: pointer; font-size: 18px; transition: background 0.3s; }
+  .quantity-input button:hover { background: var(--color-primary); color: white; }
+  .quantity-input input { width: 60px; height: 40px; border: none; text-align: center; font-size: 16px; }
+  
+  .product-actions { display: flex; gap: 15px; }
+  .add-to-cart-btn { flex: 1; padding: 15px; font-size: 16px; font-weight: bold; }
+  .wishlist-btn { width: 50px; height: 50px; border: 2px solid var(--color-primary); background: white; color: var(--color-primary); border-radius: 4px; cursor: pointer; transition: all 0.3s; }
+  .wishlist-btn:hover { background: var(--color-primary); color: white; }
+  
+  .product-highlights { background: var(--color-bg-light); padding: 20px; border-radius: 8px; margin-top: 30px; }
+  .product-highlight { display: flex; align-items: start; gap: 12px; margin-bottom: 15px; }
+  .product-highlight:last-child { margin-bottom: 0; }
+  .product-highlight-icon { color: var(--color-primary); margin-top: 2px; }
+  
+  .product-tabs { margin-top: 60px; border-top: 1px solid #e5e5e5; }
+  .tab-buttons { display: flex; gap: 0; border-bottom: 1px solid #e5e5e5; }
+  .tab-button { padding: 15px 30px; background: none; border: none; cursor: pointer; font-size: 15px; color: #666; transition: all 0.3s; position: relative; }
+  .tab-button.active { color: var(--color-primary); }
+  .tab-button.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--color-primary); }
+  .tab-content { padding: 30px 0; display: none; }
+  .tab-content.active { display: block; }
+  .tab-content h3 { font-size: 20px; margin-bottom: 15px; color: var(--color-secondary); }
+  .tab-content p { font-size: 15px; line-height: 1.8; color: #666; margin-bottom: 15px; }
+  
+  .related-products { padding: 80px 0; background: var(--color-bg-light); }
+  
+  @media (max-width: 968px) {
+    .product-container { grid-template-columns: 1fr; gap: 40px; }
+    .product-images { position: static; }
+    .product-title { font-size: 28px; }
+    .product-actions { flex-direction: column; }
+    .wishlist-btn { width: 100%; }
+  }
+</style>
+
+<div class="container">
+  <div class="breadcrumb">
+    <a href="/">Home</a> / 
+    <a href="/collections/{{ product.collections.first.handle }}">{{ product.collections.first.title }}</a> / 
+    <span>{{ product.title }}</span>
+  </div>
+</div>
+
+<section class="product-section">
+  <div class="container">
+    <div class="product-container">
+      <div class="product-images">
+        <div class="product-image-main">
+          <img src="{{ product.featured_image | img_url: '800x800' }}" alt="{{ product.title }}" id="main-image">
+        </div>
+        
+        {% if product.images.size > 1 %}
+        <div class="product-thumbnails">
+          {% for image in product.images limit: 3 %}
+            <div class="product-thumbnail {% if forloop.first %}active{% endif %}" onclick="changeImage('{{ image | img_url: '800x800' }}', this)">
+              <img src="{{ image | img_url: '200x200' }}" alt="{{ product.title }}">
+            </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="product-info">
+        {% if product.tags contains 'blessed' %}
+          <span class="product-badge-tag">Blessed in Jerusalem</span>
+        {% endif %}
+
+        <h1 class="product-title">{{ product.title }}</h1>
+        <div class="product-price">{{ product.price | money }}</div>
+
+        <div class="product-description">
+          {{ product.description }}
+        </div>
+
+        <div class="product-features">
+          <div class="product-feature">
+            <svg class="product-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 11l3 3L22 4"/>
+              <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+            </svg>
+            <span class="product-feature-text">Certified Authentic</span>
+          </div>
+          <div class="product-feature">
+            <svg class="product-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            </svg>
+            <span class="product-feature-text">Blessed</span>
+          </div>
+        </div>
+
+        {% form 'product', product %}
+          <div class="product-form">
+            <div class="quantity-selector">
+              <label class="quantity-label">Quantity:</label>
+              <div class="quantity-input">
+                <button type="button" onclick="decreaseQuantity()">-</button>
+                <input type="number" id="quantity" name="quantity" value="1" min="1">
+                <button type="button" onclick="increaseQuantity()">+</button>
+              </div>
+            </div>
+
+            <div class="product-actions">
+              <button type="submit" class="btn add-to-cart-btn">Add to Cart</button>
+              <button type="button" class="wishlist-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        {% endform %}
+
+        <div class="product-highlights">
+          <div class="product-highlight">
+            <svg class="product-highlight-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span>Handcrafted in Bethlehem by Christian artisans</span>
+          </div>
+          <div class="product-highlight">
+            <svg class="product-highlight-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span>Includes Certificate of Authenticity</span>
+          </div>
+          <div class="product-highlight">
+            <svg class="product-highlight-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span>Free shipping on orders over $75</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-tabs">
+      <div class="tab-buttons">
+        <button class="tab-button active" onclick="switchTab(0)">Description</button>
+        <button class="tab-button" onclick="switchTab(1)">Origin</button>
+        <button class="tab-button" onclick="switchTab(2)">Blessing</button>
+        <button class="tab-button" onclick="switchTab(3)">Shipping</button>
+      </div>
+
+      <div class="tab-content active">
+        <h3>Product Details</h3>
+        {{ product.content }}
+      </div>
+
+      <div class="tab-content">
+        <h3>Origin & Craftsmanship</h3>
+        <p>This piece is handcrafted by Christian artisans in Bethlehem who have passed down their sacred craft through generations. Each artisan family specializes in creating devotional items using traditional techniques that date back centuries.</p>
+        <p>The olive wood comes from ancient trees that have stood witness to thousands of years of prayer and pilgrimage in the Holy Land.</p>
+      </div>
+
+      <div class="tab-content">
+        <h3>Blessed in Jerusalem</h3>
+        <p>Every piece from Fatima Store is blessed in Jerusalem's sacred spaces before being shipped to you. This blessing connects you directly to the Holy Land and adds spiritual significance to your treasured item.</p>
+      </div>
+
+      <div class="tab-content">
+        <h3>Shipping Information</h3>
+        <p>We offer free standard shipping on all orders over $75. Orders typically ship within 2-3 business days and arrive within 7-10 business days.</p>
+        <p>All items are carefully packaged to ensure they arrive safely at your door.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="related-products">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">You May Also Like</h2>
+    </div>
+    
+    <div class="product-grid">
+      {% for rec_product in collections.all.products limit: 4 %}
+        {% unless rec_product.id == product.id %}
+          <a href="{{ rec_product.url }}" class="product-card">
+            <div class="product-image-wrapper">
+              <img src="{{ rec_product.featured_image | img_url: '500x500' }}" alt="{{ rec_product.title }}" class="product-image">
+            </div>
+            <div class="product-info">
+              <h3 class="product-title">{{ rec_product.title }}</h3>
+              <p class="product-subtitle">Handcrafted in Jerusalem</p>
+              <p class="product-price">{{ rec_product.price | money }}</p>
+            </div>
+          </a>
+        {% endunless %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<script>
+  function changeImage(url, element) {
+    document.getElementById('main-image').src = url;
+    document.querySelectorAll('.product-thumbnail').forEach(thumb => {
+      thumb.classList.remove('active');
+    });
+    element.classList.add('active');
+  }
+
+  function increaseQuantity() {
+    const input = document.getElementById('quantity');
+    input.value = parseInt(input.value) + 1;
+  }
+
+  function decreaseQuantity() {
+    const input = document.getElementById('quantity');
+    if (parseInt(input.value) > 1) {
+      input.value = parseInt(input.value) - 1;
+    }
+  }
+
+  function switchTab(index) {
+    const buttons = document.querySelectorAll('.tab-button');
+    const contents = document.querySelectorAll('.tab-content');
+    
+    buttons.forEach((btn, i) => {
+      if (i === index) {
+        btn.classList.add('active');
+        contents[i].classList.add('active');
+      } else {
+        btn.classList.remove('active');
+        contents[i].classList.remove('active');
+      }
+    });
+  }
+</script>
