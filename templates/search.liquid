@@ -1,0 +1,515 @@
+{% comment %}
+  Search Results Page Template
+  Save as: templates/search.liquid
+{% endcomment %}
+
+<style>
+  .search-header {
+    background: var(--color-bg-light);
+    padding: 60px 0;
+    text-align: center;
+  }
+  
+  .search-header h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+    color: var(--color-secondary);
+  }
+  
+  .search-header p {
+    font-size: 16px;
+    color: #666;
+    max-width: 700px;
+    margin: 0 auto 30px;
+  }
+  
+  .search-form-header {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .search-input-wrapper {
+    display: flex;
+    gap: 10px;
+    background: white;
+    padding: 8px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  .search-input-wrapper input {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    font-size: 16px;
+    outline: none;
+  }
+  
+  .search-input-wrapper button {
+    padding: 12px 30px;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+  }
+  
+  .search-input-wrapper button:hover {
+    background: #B89851;
+  }
+  
+  .search-main {
+    padding: 60px 0;
+  }
+  
+  .search-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+  }
+  
+  .search-sidebar {
+    position: sticky;
+    top: 120px;
+    height: fit-content;
+  }
+  
+  .filter-section {
+    margin-bottom: 35px;
+    padding-bottom: 35px;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  
+  .filter-section:last-child {
+    border-bottom: none;
+  }
+  
+  .filter-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: var(--color-secondary);
+  }
+  
+  .filter-options {
+    list-style: none;
+  }
+  
+  .filter-option {
+    margin-bottom: 12px;
+  }
+  
+  .filter-option a {
+    display: block;
+    padding: 8px 12px;
+    color: #666;
+    transition: all 0.3s;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .filter-option a:hover {
+    background: var(--color-bg-light);
+    color: var(--color-primary);
+  }
+  
+  .filter-quote {
+    background: var(--color-bg-light);
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+  }
+  
+  .filter-quote p {
+    font-size: 13px;
+    line-height: 1.6;
+    font-style: italic;
+    color: #666;
+    margin: 0;
+  }
+  
+  .search-content {
+    min-width: 0;
+  }
+  
+  .search-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  
+  .search-results-count {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .search-results-count strong {
+    color: var(--color-primary);
+    font-weight: bold;
+  }
+  
+  .sort-select {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    background: white;
+  }
+  
+  .search-results-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+  
+  .product-card {
+    position: relative;
+    transition: transform 0.3s;
+    display: block;
+  }
+  
+  .product-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .product-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    aspect-ratio: 1;
+    background: #f5f5f5;
+  }
+  
+  .product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+  }
+  
+  .product-card:hover .product-image {
+    transform: scale(1.05);
+  }
+  
+  .product-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--color-primary);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  
+  .product-info {
+    text-align: center;
+  }
+  
+  .product-title {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: var(--color-secondary);
+    font-weight: 500;
+  }
+  
+  .product-subtitle {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 8px;
+  }
+  
+  .product-price {
+    font-size: 18px;
+    color: var(--color-primary);
+    font-weight: bold;
+  }
+  
+  .no-results {
+    text-align: center;
+    padding: 80px 20px;
+  }
+  
+  .no-results-icon {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 30px;
+    background: var(--color-bg-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+  }
+  
+  .no-results h3 {
+    font-size: 28px;
+    margin-bottom: 15px;
+    color: var(--color-secondary);
+  }
+  
+  .no-results p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+  }
+  
+  .search-suggestions {
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 1px solid #e5e5e5;
+  }
+  
+  .search-suggestions h4 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: var(--color-secondary);
+  }
+  
+  .search-suggestions ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .search-suggestions li a {
+    display: inline-block;
+    padding: 8px 16px;
+    background: var(--color-bg-light);
+    color: var(--color-secondary);
+    border-radius: 20px;
+    font-size: 14px;
+    transition: all 0.3s;
+  }
+  
+  .search-suggestions li a:hover {
+    background: var(--color-primary);
+    color: white;
+  }
+  
+  @media (max-width: 968px) {
+    .search-container {
+      grid-template-columns: 1fr;
+    }
+    
+    .search-sidebar {
+      position: static;
+    }
+    
+    .search-results-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    
+    .search-header h1 {
+      font-size: 32px;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .search-results-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+    
+    .product-title {
+      font-size: 14px;
+    }
+    
+    .product-price {
+      font-size: 16px;
+    }
+  }
+</style>
+
+<div class="search-header">
+  <div class="container">
+    <h1>Search Results</h1>
+    {% if search.performed %}
+      <p>
+        {% if search.results_count > 0 %}
+          Found {{ search.results_count }} {% if search.results_count == 1 %}result{% else %}results{% endif %} for "{{ search.terms }}"
+        {% else %}
+          No results found for "{{ search.terms }}"
+        {% endif %}
+      </p>
+    {% else %}
+      <p>Search our collection of sacred treasures from Jerusalem</p>
+    {% endif %}
+    
+    <div class="search-form-header">
+      <form action="/search" method="get" class="search-input-wrapper">
+        <input type="search" 
+               name="q" 
+               value="{{ search.terms | escape }}" 
+               placeholder="Search for products..." 
+               required
+               autocomplete="off">
+        <button type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<section class="search-main">
+  <div class="container">
+    <div class="search-container">
+      <aside class="search-sidebar">
+        <div class="filter-section">
+          <h3 class="filter-title">Browse Collections</h3>
+          <ul class="filter-options">
+            <li class="filter-option">
+              <a href="/collections/all">All Products</a>
+            </li>
+            <li class="filter-option">
+              <a href="/collections/olive-wood-creations">Olive Wood Creations</a>
+            </li>
+            <li class="filter-option">
+              <a href="/collections/rosaries">Rosaries & Prayer Beads</a>
+            </li>
+            <li class="filter-option">
+              <a href="/collections/holy-oils">Holy Oils & Incense</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="filter-quote">
+          <p>"Each piece carries the soul of Jerusalem — blessed and handcrafted with devotion."</p>
+        </div>
+      </aside>
+
+      <div class="search-content">
+        {% if search.performed %}
+          {% if search.results_count > 0 %}
+            <div class="search-toolbar">
+              <div class="search-results-count">
+                Showing <strong>{{ search.results_count }}</strong> {% if search.results_count == 1 %}result{% else %}results{% endif %}
+              </div>
+              <select class="sort-select" onchange="sortResults(this.value)">
+                <option value="">Sort by</option>
+                <option value="title-ascending">Alphabetically, A-Z</option>
+                <option value="title-descending">Alphabetically, Z-A</option>
+                <option value="price-ascending">Price, low to high</option>
+                <option value="price-descending">Price, high to low</option>
+                <option value="created-descending">Date, new to old</option>
+              </select>
+            </div>
+
+            <div class="search-results-grid">
+              {% for item in search.results %}
+                {% if item.object_type == 'product' %}
+                  <a href="{{ item.url }}" class="product-card">
+                    <div class="product-image-wrapper">
+                      {% if item.featured_image %}
+                        <img src="{{ item.featured_image | img_url: '500x500' }}" 
+                             alt="{{ item.title }}" 
+                             class="product-image"
+                             loading="lazy">
+                      {% endif %}
+                      {% if item.tags contains 'blessed' %}
+                        <span class="product-badge">Blessed</span>
+                      {% endif %}
+                    </div>
+                    <div class="product-info">
+                      <h3 class="product-title">{{ item.title }}</h3>
+                      <p class="product-subtitle">Handcrafted in Jerusalem</p>
+                      <p class="product-price">{{ item.price | money }}</p>
+                    </div>
+                  </a>
+                {% endif %}
+              {% endfor %}
+            </div>
+
+            {% if paginate.pages > 1 %}
+              <div class="pagination" style="margin-top: 60px;">
+                {% if paginate.previous %}
+                  <a href="{{ paginate.previous.url }}">← Previous</a>
+                {% endif %}
+
+                {% for part in paginate.parts %}
+                  {% if part.is_link %}
+                    <a href="{{ part.url }}">{{ part.title }}</a>
+                  {% else %}
+                    <span class="{% if part.title == paginate.current_page %}active{% endif %}">
+                      {{ part.title }}
+                    </span>
+                  {% endif %}
+                {% endfor %}
+
+                {% if paginate.next %}
+                  <a href="{{ paginate.next.url }}">Next →</a>
+                {% endif %}
+              </div>
+            {% endif %}
+          {% else %}
+            <div class="no-results">
+              <div class="no-results-icon">
+                <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/>
+                  <path d="M21 21l-4.35-4.35"/>
+                </svg>
+              </div>
+              <h3>No results found</h3>
+              <p>We couldn't find any products matching "{{ search.terms }}"</p>
+              <a href="/collections/all" class="btn">Browse All Products</a>
+              
+              <div class="search-suggestions">
+                <h4>Popular Searches</h4>
+                <ul>
+                  <li><a href="/search?q=cross">Cross</a></li>
+                  <li><a href="/search?q=rosary">Rosary</a></li>
+                  <li><a href="/search?q=olive+wood">Olive Wood</a></li>
+                  <li><a href="/search?q=holy+oil">Holy Oil</a></li>
+                  <li><a href="/search?q=nativity">Nativity</a></li>
+                  <li><a href="/search?q=blessed">Blessed Items</a></li>
+                </ul>
+              </div>
+            </div>
+          {% endif %}
+        {% else %}
+          <div class="no-results">
+            <div class="no-results-icon">
+              <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="M21 21l-4.35-4.35"/>
+              </svg>
+            </div>
+            <h3>Start Your Search</h3>
+            <p>Enter keywords to find sacred treasures from Jerusalem</p>
+            
+            <div class="search-suggestions">
+              <h4>Popular Searches</h4>
+              <ul>
+                <li><a href="/search?q=cross">Cross</a></li>
+                <li><a href="/search?q=rosary">Rosary</a></li>
+                <li><a href="/search?q=olive+wood">Olive Wood</a></li>
+                <li><a href="/search?q=holy+oil">Holy Oil</a></li>
+                <li><a href="/search?q=nativity">Nativity</a></li>
+                <li><a href="/search?q=blessed">Blessed Items</a></li>
+              </ul>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function sortResults(sortValue) {
+    if (sortValue) {
+      const url = new URL(window.location);
+      url.searchParams.set('sort_by', sortValue);
+      window.location = url.toString();
+    }
+  }
+</script>
