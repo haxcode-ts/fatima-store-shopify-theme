@@ -36,65 +36,64 @@
   .timeline-header { text-align: center; margin-bottom: 80px; }
   .timeline-header h2 { font-size: 42px; margin-bottom: 20px; color: var(--color-secondary); }
   
-  .timeline { max-width: 900px; margin: 0 auto; position: relative; }
+  .timeline { max-width: 1000px; margin: 0 auto; position: relative; }
   .timeline::before {
     content: '';
     position: absolute;
     left: 50%;
-    top: 0;
-    bottom: 0;
+    top: 80px;
+    bottom: 80px;
     width: 2px;
     background: var(--color-primary);
     transform: translateX(-50%);
   }
   
   .timeline-item {
-    display: flex;
-    margin-bottom: 60px;
     position: relative;
+    margin-bottom: 100px;
   }
-  .timeline-item:nth-child(odd) { flex-direction: row; }
-  .timeline-item:nth-child(even) { flex-direction: row-reverse; }
+  
+  .timeline-item:last-child {
+    margin-bottom: 0;
+  }
   
   .timeline-content {
-    flex: 1;
-    padding: 30px;
     background: white;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  }
-  .timeline-item:nth-child(odd) .timeline-content {
-    margin-right: 60px;
-    text-align: right;
-  }
-  .timeline-item:nth-child(even) .timeline-content {
-    margin-left: 60px;
+    position: relative;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 40px 50px;
+    text-align: center;
   }
   
   .timeline-icon {
     position: absolute;
     left: 50%;
+    top: -50px;
     transform: translateX(-50%);
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     background: var(--color-primary);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-weight: bold;
     z-index: 1;
+    box-shadow: 0 4px 15px rgba(201, 169, 97, 0.3);
   }
   
   .timeline-title {
-    font-size: 24px;
-    margin-bottom: 10px;
+    font-size: 28px;
+    margin-bottom: 15px;
     color: var(--color-secondary);
+    margin-top: 20px;
   }
   .timeline-description {
-    font-size: 15px;
-    line-height: 1.7;
+    font-size: 16px;
+    line-height: 1.8;
     color: #666;
   }
   

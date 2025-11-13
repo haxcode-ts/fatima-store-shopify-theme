@@ -50,7 +50,8 @@ class CartManager {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to add to cart');
+        const error = await response.json();
+        throw new Error(error.description || 'Failed to add to cart');
       }
 
       const data = await response.json();
@@ -58,9 +59,20 @@ class CartManager {
       // Dispatch custom event
       document.dispatchEvent(new CustomEvent('cart:updated'));
       
+      // Show success notification
+      if (window.FatimaStore) {
+        window.FatimaStore.showNotification('Product added to cart!', 'success');
+      }
+      
       return data;
     } catch (error) {
       console.error('Error adding to cart:', error);
+      
+      // Show error notification
+      if (window.FatimaStore) {
+        window.FatimaStore.showNotification(error.message || 'Could not add to cart', 'error');
+      }
+      
       throw error;
     }
   }
