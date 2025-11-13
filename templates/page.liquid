@@ -1,0 +1,79 @@
+{% comment %}
+  Default Page Template
+  Save as: templates/page.liquid
+  This will apply to ALL pages unless they have a custom template
+{% endcomment %}
+
+<style>
+  .page-header {
+    background: var(--color-bg-light);
+    padding: 80px 0;
+    text-align: center;
+  }
+  .page-header h1 {
+    font-size: 48px;
+    margin-bottom: 15px;
+    color: var(--color-secondary);
+  }
+  
+  .page-content {
+    padding: 80px 0;
+    background: white;
+  }
+  .page-content-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .page-content-inner h2 {
+    font-size: 32px;
+    margin: 40px 0 20px;
+    color: var(--color-secondary);
+  }
+  .page-content-inner h3 {
+    font-size: 24px;
+    margin: 30px 0 15px;
+    color: var(--color-secondary);
+  }
+  .page-content-inner p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #666;
+    margin-bottom: 20px;
+  }
+  .page-content-inner ul,
+  .page-content-inner ol {
+    margin-bottom: 20px;
+    padding-left: 25px;
+  }
+  .page-content-inner li {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #666;
+    margin-bottom: 10px;
+  }
+  .page-content-inner img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 30px 0;
+  }
+  
+  @media (max-width: 768px) {
+    .page-header h1 { font-size: 36px; }
+    .page-content { padding: 60px 0; }
+  }
+</style>
+
+<div class="page-header">
+  <div class="container">
+    <h1>{{ page.title }}</h1>
+  </div>
+</div>
+
+<section class="page-content">
+  <div class="container">
+    <div class="page-content-inner">
+      {{ page.content }}
+    </div>
+  </div>
+</section>

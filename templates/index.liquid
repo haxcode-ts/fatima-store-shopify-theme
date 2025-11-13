@@ -59,11 +59,25 @@
   .cta-content h2 { font-size: 36px; margin-bottom: 15px; }
   .cta-content p { font-size: 16px; margin-bottom: 30px; opacity: 0.9; }
   
+  .newsletter-section { padding: 80px 0; background: white; }
+  .newsletter-content { max-width: 700px; margin: 0 auto; text-align: center; }
+  .newsletter-content h2 { font-size: 36px; margin-bottom: 15px; color: var(--color-secondary); }
+  .newsletter-content > p { font-size: 16px; color: #666; margin-bottom: 40px; line-height: 1.8; }
+  .newsletter-form { margin-top: 30px; }
+  .newsletter-input-wrapper { display: flex; gap: 10px; max-width: 500px; margin: 0 auto 15px; }
+  .newsletter-input { flex: 1; padding: 15px 20px; border: 2px solid #ddd; border-radius: 4px; font-size: 15px; transition: border-color 0.3s; }
+  .newsletter-input:focus { outline: none; border-color: var(--color-primary); }
+  .newsletter-btn { padding: 15px 35px; background: var(--color-primary); color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 15px; font-weight: bold; transition: all 0.3s; white-space: nowrap; }
+  .newsletter-btn:hover { background: #B89851; transform: translateY(-2px); }
+  .newsletter-note { font-size: 13px; color: #888; margin-top: 10px; }
+  
   @media (max-width: 768px) {
     .hero-title { font-size: 32px; }
     .about-content { grid-template-columns: 1fr; }
     .about-features { grid-template-columns: 1fr; }
     .product-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+    .newsletter-input-wrapper { flex-direction: column; }
+    .newsletter-btn { width: 100%; }
   }
 </style>
 
@@ -210,6 +224,23 @@
       <h2>Bring the Holy Land into Your Home</h2>
       <p>Each piece is not just made but lived — carrying centuries of prayer, devotion, and the sacred spirit of Jerusalem into your daily life.</p>
       <a href="/collections/all" class="btn">Begin Your Journey</a>
+    </div>
+  </div>
+</section>
+
+<section class="newsletter-section">
+  <div class="container">
+    <div class="newsletter-content">
+      <h2>Receive Blessings and Stories from Jerusalem</h2>
+      <p>Join our community and stay connected to the Holy Land through stories of faith, artisan features, and sacred inspiration.</p>
+      
+      <form class="newsletter-form">
+        <div class="newsletter-input-wrapper">
+          <input type="email" class="newsletter-input" placeholder="Your email address" required>
+          <button type="submit" class="newsletter-btn">Subscribe</button>
+        </div>
+        <p class="newsletter-note">We respect your privacy. Unsubscribe anytime.</p>
+      </form>
     </div>
   </div>
 </section>

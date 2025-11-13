@@ -1,70 +1,219 @@
 {% comment %}
-  About Page Template
+  About Page Custom Template
   Save as: templates/page.about.liquid
+  
+  IMPORTANT: After uploading this file:
+  1. Go to Shopify Admin → Online Store → Pages
+  2. Find/Create "About" page
+  3. In the page editor, look for "Template" on the right sidebar
+  4. Select "page.about" from the dropdown
+  5. Save the page
 {% endcomment %}
 
 <style>
-  .about-hero { position: relative; height: 400px; display: flex; align-items: center; justify-content: center; text-align: center; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=1600') center/cover; color: white; }
+  /* Hero Section */
+  .about-hero {
+    position: relative;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=1600') center/cover;
+    color: white;
+  }
   .about-hero h1 { font-size: 56px; margin-bottom: 15px; }
   .about-hero p { font-size: 20px; opacity: 0.9; }
   
+  /* Journey Section */
   .journey-section { padding: 100px 0; background: white; }
   .journey-content { max-width: 800px; margin: 0 auto; text-align: center; }
   .journey-content h2 { font-size: 42px; margin-bottom: 30px; color: var(--color-secondary); }
   .journey-content p { font-size: 18px; line-height: 1.9; color: #666; margin-bottom: 25px; }
   
+  /* Timeline Section */
   .timeline-section { padding: 100px 0; background: var(--color-bg-light); }
   .timeline-header { text-align: center; margin-bottom: 80px; }
   .timeline-header h2 { font-size: 42px; margin-bottom: 20px; color: var(--color-secondary); }
-  .timeline { max-width: 900px; margin: 0 auto; position: relative; }
-  .timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--color-primary); transform: translateX(-50%); }
   
-  .timeline-item { display: flex; margin-bottom: 60px; position: relative; }
+  .timeline { max-width: 900px; margin: 0 auto; position: relative; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--color-primary);
+    transform: translateX(-50%);
+  }
+  
+  .timeline-item {
+    display: flex;
+    margin-bottom: 60px;
+    position: relative;
+  }
   .timeline-item:nth-child(odd) { flex-direction: row; }
   .timeline-item:nth-child(even) { flex-direction: row-reverse; }
-  .timeline-content { flex: 1; padding: 30px; background: white; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-  .timeline-item:nth-child(odd) .timeline-content { margin-right: 60px; text-align: right; }
-  .timeline-item:nth-child(even) .timeline-content { margin-left: 60px; }
-  .timeline-icon { position: absolute; left: 50%; transform: translateX(-50%); width: 50px; height: 50px; background: var(--color-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; z-index: 1; }
-  .timeline-title { font-size: 24px; margin-bottom: 10px; color: var(--color-secondary); }
-  .timeline-description { font-size: 15px; line-height: 1.7; color: #666; }
   
+  .timeline-content {
+    flex: 1;
+    padding: 30px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+  .timeline-item:nth-child(odd) .timeline-content {
+    margin-right: 60px;
+    text-align: right;
+  }
+  .timeline-item:nth-child(even) .timeline-content {
+    margin-left: 60px;
+  }
+  
+  .timeline-icon {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 50px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    z-index: 1;
+  }
+  
+  .timeline-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: var(--color-secondary);
+  }
+  .timeline-description {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #666;
+  }
+  
+  /* Artisan Section */
   .artisan-section { padding: 100px 0; background: white; }
   .artisan-header { text-align: center; margin-bottom: 60px; }
   .artisan-header h2 { font-size: 42px; margin-bottom: 20px; color: var(--color-secondary); }
-  .artisan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  
+  .artisan-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
   .artisan-image { border-radius: 8px; overflow: hidden; }
   .artisan-image img { width: 100%; height: 100%; object-fit: cover; }
   .artisan-text p { font-size: 17px; line-height: 1.9; color: #666; margin-bottom: 20px; }
-  .artisan-quote { background: var(--color-bg-light); padding: 30px; border-left: 4px solid var(--color-primary); margin: 30px 0; }
-  .artisan-quote p { font-size: 18px; font-style: italic; line-height: 1.8; color: var(--color-secondary); margin-bottom: 10px; }
+  
+  .artisan-quote {
+    background: var(--color-bg-light);
+    padding: 30px;
+    border-left: 4px solid var(--color-primary);
+    margin: 30px 0;
+  }
+  .artisan-quote p {
+    font-size: 18px;
+    font-style: italic;
+    line-height: 1.8;
+    color: var(--color-secondary);
+    margin-bottom: 10px;
+  }
   .quote-author { font-size: 14px; color: #888; }
   
+  /* Promise Section */
   .promise-section { padding: 100px 0; background: var(--color-bg-light); }
   .promise-header { text-align: center; margin-bottom: 60px; }
   .promise-header h2 { font-size: 42px; margin-bottom: 20px; color: var(--color-secondary); }
-  .promise-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
-  .promise-card { text-align: center; background: white; padding: 40px 30px; border-radius: 8px; transition: transform 0.3s, box-shadow 0.3s; }
-  .promise-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-  .promise-icon { width: 80px; height: 80px; margin: 0 auto 25px; background: var(--color-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; }
-  .promise-title { font-size: 22px; margin-bottom: 15px; color: var(--color-secondary); }
-  .promise-description { font-size: 15px; line-height: 1.7; color: #666; }
+  .promise-header p { font-size: 16px; color: #666; max-width: 700px; margin: 0 auto; }
   
-  .closing-section { background: var(--color-secondary); color: white; padding: 80px 0; text-align: center; }
+  .promise-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+  }
+  .promise-card {
+    text-align: center;
+    background: white;
+    padding: 40px 30px;
+    border-radius: 8px;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .promise-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+  
+  .promise-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 25px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+  .promise-title {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: var(--color-secondary);
+  }
+  .promise-description {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #666;
+  }
+  
+  /* Closing Section */
+  .closing-section {
+    background: var(--color-secondary);
+    color: white;
+    padding: 80px 0;
+    text-align: center;
+  }
   .closing-content { max-width: 800px; margin: 0 auto; }
   .closing-content h2 { font-size: 42px; margin-bottom: 25px; }
-  .closing-content p { font-size: 20px; font-style: italic; margin-bottom: 15px; line-height: 1.7; }
+  .closing-content p {
+    font-size: 20px;
+    font-style: italic;
+    margin-bottom: 15px;
+    line-height: 1.7;
+  }
   .closing-author { font-size: 16px; opacity: 0.8; }
   
+  /* Responsive */
   @media (max-width: 968px) {
     .about-hero h1 { font-size: 36px; }
+    
     .timeline::before { left: 30px; }
-    .timeline-item, .timeline-item:nth-child(even) { flex-direction: row !important; }
+    .timeline-item,
+    .timeline-item:nth-child(even) { flex-direction: row !important; }
     .timeline-icon { left: 30px; }
-    .timeline-content, .timeline-item:nth-child(odd) .timeline-content, .timeline-item:nth-child(even) .timeline-content { margin-left: 80px !important; margin-right: 0 !important; text-align: left !important; }
+    .timeline-content,
+    .timeline-item:nth-child(odd) .timeline-content,
+    .timeline-item:nth-child(even) .timeline-content {
+      margin-left: 80px !important;
+      margin-right: 0 !important;
+      text-align: left !important;
+    }
+    
     .artisan-grid { grid-template-columns: 1fr; }
     .promise-grid { grid-template-columns: 1fr; }
-    .journey-content h2, .timeline-header h2, .artisan-header h2, .promise-header h2, .closing-content h2 { font-size: 32px; }
+    
+    .journey-content h2,
+    .timeline-header h2,
+    .artisan-header h2,
+    .promise-header h2,
+    .closing-content h2 { font-size: 32px; }
   }
 </style>
 
@@ -195,7 +344,7 @@
   <div class="container">
     <div class="promise-header">
       <h2>Our Promise to You</h2>
-      <p style="font-size: 16px; color: #666; max-width: 700px; margin: 0 auto;">
+      <p>
         Every piece sold by Fatima Store is authentic, handcrafted, and spiritually meaningful — carrying a fragment of Jerusalem's devotion into your home.
       </p>
     </div>
@@ -246,9 +395,7 @@
 <section class="closing-section">
   <div class="container">
     <div class="closing-content">
-      <h2>Faith is carved in every grain of olive wood.</h2>
-      <p>Every purchase is a prayer, every piece a story.</p>
-      <p>May these sacred treasures bring the Holy Land's blessing into your life.</p>
+      <h2>"Faith is carved in every grain of olive wood. Every purchase is a prayer, every piece a story. May these sacred treasures bring the Holy Land's blessing into your life."</h2>
       <div class="closing-author">— The Fatima Store Family</div>
     </div>
   </div>
