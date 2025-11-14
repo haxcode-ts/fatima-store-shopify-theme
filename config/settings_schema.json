@@ -1,9 +1,9 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Fatima Store",
+    "theme_name": "In My God",
     "theme_version": "1.0.0",
-    "theme_author": "Fatima Store",
+    "theme_author": "In My God",
     "theme_documentation_url": "https://fatimastore.com/docs",
     "theme_support_url": "https://fatimastore.com/support"
   },
@@ -100,7 +100,7 @@
         "type": "text",
         "id": "store_name",
         "label": "Store Name",
-        "default": "Fatima Store"
+        "default": "In My God"
       },
       {
         "type": "text",

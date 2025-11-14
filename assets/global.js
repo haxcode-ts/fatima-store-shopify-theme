@@ -1,5 +1,5 @@
 /**
- * Fatima Store Theme - Global JavaScript
+ * In My God Theme - Global JavaScript
  * Save as: assets/global.js
  */
 
