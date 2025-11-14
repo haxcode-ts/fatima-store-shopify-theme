@@ -223,11 +223,11 @@
             <path d="M2 17L12 22L22 17" stroke="#C9A961" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M2 12L12 17L22 12" stroke="#C9A961" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
+        {% endif %}
           <div class="header-logo-text">
             <h1>{{ section.settings.store_name | default: 'In My God' }}</h1>
             <p>{{ section.settings.tagline | default: 'From Jerusalem, With Blessings' }}</p>
           </div>
-        {% endif %}
       </a>
 
       <nav class="header-nav">
