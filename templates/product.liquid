@@ -1,3 +1,4 @@
+```liquid
 {% comment %}
   Product Page Template
   Save as: templates/product.liquid
@@ -123,12 +124,7 @@
 
         <h1 class="product-title">{{ product.title }}</h1>
         <div class="product-price">{{ product.price | money }}</div>
-<!-- Judge.me Rating Badge -->
-<div style="margin-bottom: 20px;">
-  <span class='jdgm-widget jdgm-preview-badge' data-id='{{ product.id }}'>
-    {{ product.metafields.judgeme.badge }}
-  </span>
-</div>
+
         <div class="product-description">
           <div class="description-preview" id="descriptionPreview">
             {{ product.description | strip_html | truncatewords: 30 }}
@@ -214,6 +210,7 @@
         <button class="tab-button" onclick="switchTab(1)">Origin</button>
         <button class="tab-button" onclick="switchTab(2)">Blessing</button>
         <button class="tab-button" onclick="switchTab(3)">Shipping</button>
+        <button class="tab-button" onclick="switchTab(4)">Reviews</button>
       </div>
 
       <div class="tab-content active">
@@ -229,13 +226,22 @@
 
       <div class="tab-content">
         <h3>Blessed in Jerusalem</h3>
-        <p>Every piece from In My God is blessed in Jerusalem's sacred spaces before being shipped to you. This blessing connects you directly to the Holy Land and adds spiritual significance to your treasured item.</p>
+        <p>Every piece from Fatima Store is blessed in Jerusalem's sacred spaces before being shipped to you. This blessing connects you directly to the Holy Land and adds spiritual significance to your treasured item.</p>
       </div>
 
       <div class="tab-content">
         <h3>Shipping Information</h3>
         <p>We offer free standard shipping on all orders over $75. Orders typically ship within 2-3 business days and arrive within 7-10 business days.</p>
         <p>All items are carefully packaged to ensure they arrive safely at your door.</p>
+      </div>
+
+      <div class="tab-content">
+        <!-- Start of Judge.me code -->
+        <div style='clear:both'></div>
+        <div id='judgeme_product_reviews' class='jdgm-widget jdgm-review-widget' data-product-title='{{ product.title | escape }}' data-id='{{ product.id }}' data-auto-install='false'>
+          {{ product.metafields.judgeme.widget }}
+        </div>
+        <!-- End of Judge.me code -->
       </div>
     </div>
   </div>
@@ -393,3 +399,4 @@
     }
   });
 </script>
+```
