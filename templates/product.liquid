@@ -59,6 +59,21 @@
   .tab-content p { font-size: 15px; line-height: 1.8; color: #666; margin-bottom: 15px; }
   
   .related-products { padding: 80px 0; background: var(--color-bg-light); }
+  .related-products-slider { position: relative; overflow: hidden; margin-top: 40px; }
+  .related-products-track { display: flex; gap: 20px; transition: transform 0.5s ease; }
+  .related-product-card { min-width: calc(25% - 15px); background: white; border-radius: 8px; overflow: hidden; text-decoration: none; transition: transform 0.3s, box-shadow 0.3s; }
+  .related-product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+  .related-product-image { width: 100%; aspect-ratio: 1; overflow: hidden; }
+  .related-product-image img { width: 100%; height: 100%; object-fit: cover; }
+  .related-product-content { padding: 20px; }
+  .related-product-title { font-size: 18px; font-weight: 600; color: var(--color-secondary); margin-bottom: 8px; line-height: 1.3; }
+  .related-product-subtitle { font-size: 13px; color: #999; margin-bottom: 12px; }
+  .related-product-price { font-size: 20px; font-weight: bold; color: var(--color-primary); }
+  .slider-controls { display: flex; gap: 10px; justify-content: center; margin-top: 30px; }
+  .slider-btn { width: 40px; height: 40px; border: 2px solid var(--color-primary); background: white; color: var(--color-primary); border-radius: 50%; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; }
+  .slider-btn:hover { background: var(--color-primary); color: white; }
+  .slider-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .slider-btn:disabled:hover { background: white; color: var(--color-primary); }
   
   @media (max-width: 968px) {
     .product-container { grid-template-columns: 1fr; gap: 40px; }
@@ -66,6 +81,11 @@
     .product-title { font-size: 28px; }
     .product-actions { flex-direction: column; }
     .wishlist-btn { width: 100%; }
+    .related-product-card { min-width: calc(50% - 10px); }
+  }
+  
+  @media (max-width: 640px) {
+    .related-product-card { min-width: 100%; }
   }
 </style>
 
@@ -105,7 +125,10 @@
         <div class="product-price">{{ product.price | money }}</div>
 
         <div class="product-description">
-          {{ product.description }}
+          <div class="description-preview" id="descriptionPreview">
+            {{ product.description | strip_html | truncatewords: 30 }}
+            <a href="#" class="read-more-link" onclick="showFullDescription(event)">Read more...</a>
+          </div>
         </div>
 
         <div class="product-features">
@@ -219,26 +242,65 @@
       <h2 class="section-title">You May Also Like</h2>
     </div>
     
-    <div class="product-grid">
-      {% for rec_product in collections.all.products limit: 4 %}
-        {% unless rec_product.id == product.id %}
-          <a href="{{ rec_product.url }}" class="product-card">
-            <div class="product-image-wrapper">
-              <img src="{{ rec_product.featured_image | img_url: '500x500' }}" alt="{{ rec_product.title }}" class="product-image">
-            </div>
-            <div class="product-info">
-              <h3 class="product-title">{{ rec_product.title }}</h3>
-              <p class="product-subtitle">Handcrafted in Jerusalem</p>
-              <p class="product-price">{{ rec_product.price | money }}</p>
-            </div>
-          </a>
-        {% endunless %}
-      {% endfor %}
+    <div class="related-products-slider">
+      <div class="related-products-track" id="relatedProductsTrack">
+        {% for rec_product in collections.all.products limit: 8 %}
+          {% unless rec_product.id == product.id %}
+            <a href="{{ rec_product.url }}" class="related-product-card">
+              <div class="related-product-image">
+                <img src="{{ rec_product.featured_image | img_url: '500x500' }}" alt="{{ rec_product.title }}">
+              </div>
+              <div class="related-product-content">
+                <h3 class="related-product-title">{{ rec_product.title }}</h3>
+                <p class="related-product-subtitle">Handcrafted in Jerusalem</p>
+                <p class="related-product-price">{{ rec_product.price | money }}</p>
+              </div>
+            </a>
+          {% endunless %}
+        {% endfor %}
+      </div>
+    </div>
+    
+    <div class="slider-controls">
+      <button class="slider-btn" id="prevBtn" onclick="slideProducts(-1)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      <button class="slider-btn" id="nextBtn" onclick="slideProducts(1)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
     </div>
   </div>
 </section>
 
 <script>
+  let currentSlide = 0;
+  const slidesToShow = 4;
+  
+  function slideProducts(direction) {
+    const track = document.getElementById('relatedProductsTrack');
+    const cards = track.querySelectorAll('.related-product-card');
+    const maxSlide = Math.max(0, cards.length - slidesToShow);
+    
+    currentSlide = Math.max(0, Math.min(maxSlide, currentSlide + direction));
+    
+    const slideWidth = cards[0].offsetWidth + 20;
+    track.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
+    
+    document.getElementById('prevBtn').disabled = currentSlide === 0;
+    document.getElementById('nextBtn').disabled = currentSlide >= maxSlide;
+  }
+  
+  window.addEventListener('load', () => {
+    const track = document.getElementById('relatedProductsTrack');
+    const cards = track.querySelectorAll('.related-product-card');
+    document.getElementById('prevBtn').disabled = true;
+    document.getElementById('nextBtn').disabled = cards.length <= slidesToShow;
+  });
+
   function changeImage(url, element) {
     document.getElementById('main-image').src = url;
     document.querySelectorAll('.product-thumbnail').forEach(thumb => {
@@ -273,4 +335,56 @@
       }
     });
   }
+  
+  document.getElementById('product-form')?.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const button = this.querySelector('button[type="submit"]');
+    const originalText = button.textContent;
+    
+    button.disabled = true;
+    button.textContent = 'Adding...';
+    
+    try {
+      const response = await fetch('/cart/add.js', {
+        method: 'POST',
+        body: formData
+      });
+      
+      if (response.ok) {
+        button.textContent = 'Added! ✓';
+        
+        const cartResponse = await fetch('/cart.js');
+        const cart = await cartResponse.json();
+        document.querySelectorAll('[id="cart-icon-bubble"]').forEach(el => {
+          el.textContent = cart.item_count;
+          el.style.display = cart.item_count > 0 ? 'flex' : 'none';
+        });
+        
+        if (window.FatimaStore) {
+          window.FatimaStore.showNotification('Product added to cart!', 'success');
+        }
+        
+        setTimeout(() => {
+          button.disabled = false;
+          button.textContent = originalText;
+        }, 2000);
+      } else {
+        throw new Error('Failed to add to cart');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      button.textContent = 'Error - Try Again';
+      
+      if (window.FatimaStore) {
+        window.FatimaStore.showNotification('Could not add to cart', 'error');
+      }
+      
+      setTimeout(() => {
+        button.disabled = false;
+        button.textContent = originalText;
+      }, 2000);
+    }
+  });
 </script>

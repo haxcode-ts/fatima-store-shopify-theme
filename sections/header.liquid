@@ -1,10 +1,25 @@
 <style>
   .announcement-bar {
-    background: var(--color-bg-light);
-    padding: 8px 0;
+    background: var(--color-primary);
+    color: white;
+    padding: 12px 0;
     text-align: center;
     font-size: 14px;
-    border-bottom: 1px solid #e5e5e5;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    position: relative;
+    z-index: 101;
+  }
+  
+  .announcement-bar a {
+    color: white;
+    text-decoration: underline;
+    margin-left: 8px;
+    transition: opacity 0.3s;
+  }
+  
+  .announcement-bar a:hover {
+    opacity: 0.8;
   }
 
   .header-wrapper {
@@ -70,6 +85,9 @@
   .header-icon {
     cursor: pointer;
     position: relative;
+    background: none;
+    border: none;
+    padding: 0;
   }
 
   .cart-count {
@@ -103,84 +121,7 @@
       display: none;
     }
   }
-</style>
-
-<div class="header-wrapper">
-  <div class="container">
-    <header class="header">
-      <a href="/" class="header-logo">
-        {% if section.settings.logo %}
-          <img src="{{ section.settings.logo | img_url: '60x' }}" alt="{{ shop.name }}" width="30" height="30">
-        {% else %}
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#C9A961" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M2 17L12 22L22 17" stroke="#C9A961" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M2 12L12 17L22 12" stroke="#C9A961" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        {% endif %}
-        <div class="header-logo-text">
-          <h1>{{ section.settings.store_name | default: 'Fatima Store' }}</h1>
-          <p>{{ section.settings.tagline | default: 'From Jerusalem, With Blessings' }}</p>
-        </div>
-      </a>
-
-      <nav class="header-nav">
-        <a href="/" {% if template.name == 'index' %}class="active"{% endif %}>Home</a>
-        <a href="/collections/all" {% if template.name == 'collection' or template.name == 'product' %}class="active"{% endif %}>Shop</a>
-        <a href="/pages/about" {% if template.name == 'page' and page.handle == 'about' %}class="active"{% endif %}>About</a>
-        <a href="/blogs/news" {% if template.name == 'blog' or template.name == 'article' %}class="active"{% endif %}>Blog</a>
-      </nav>
-
-      <div class="header-icons">
-        <div class="header-icon mobile-menu-toggle">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <line x1="3" y1="12" x2="21" y2="12" stroke-width="2"/>
-            <line x1="3" y1="6" x2="21" y2="6" stroke-width="2"/>
-            <line x1="3" y1="18" x2="21" y2="18" stroke-width="2"/>
-          </svg>
-        </div>
-        
-        <button class="header-icon" onclick="toggleSearch()" aria-label="Search">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"/>
-            <path d="M21 21l-4.35-4.35"/>
-          </svg>
-        </button>
-        
-        <a href="/cart" class="header-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="9" cy="21" r="1"/>
-            <circle cx="20" cy="21" r="1"/>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-          </svg>
-          <span class="cart-count" id="cart-icon-bubble">{{ cart.item_count }}</span>
-        </a>
-      </div>
-    </header>
-  </div>
   
-  <!-- Search Popup -->
-  <div class="search-popup" id="searchPopup">
-    <div class="search-popup-content">
-      <button class="search-close" onclick="toggleSearch()" aria-label="Close search">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="18" y1="6" x2="6" y2="18"/>
-          <line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
-      </button>
-      <form action="/search" method="get" class="search-popup-form">
-        <input type="search" 
-               name="q" 
-               placeholder="Search for sacred treasures..." 
-               autocomplete="off"
-               class="search-popup-input">
-        <button type="submit" class="search-popup-button">Search</button>
-      </form>
-    </div>
-  </div>
-</div>
-
-<style>
   .search-popup {
     position: fixed;
     top: 0;
@@ -268,7 +209,82 @@
       padding: 12px 25px;
     }
   }
-</style>
+</style> 
+
+<div class="header-wrapper">
+  <div class="container">
+    <header class="header">
+      <a href="/" class="header-logo">
+        {% if section.settings.logo %}
+          <img src="{{ section.settings.logo | img_url: '60x' }}" alt="{{ shop.name }}" width="30" height="30">
+        {% else %}
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#C9A961" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 17L12 22L22 17" stroke="#C9A961" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 12L12 17L22 12" stroke="#C9A961" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        {% endif %}
+        <div class="header-logo-text">
+          <h1>{{ section.settings.store_name | default: 'Fatima Store' }}</h1>
+          <p>{{ section.settings.tagline | default: 'From Jerusalem, With Blessings' }}</p>
+        </div>
+      </a>
+
+      <nav class="header-nav">
+        <a href="/" {% if template.name == 'index' %}class="active"{% endif %}>Home</a>
+        <a href="/collections/all" {% if template.name == 'collection' or template.name == 'product' %}class="active"{% endif %}>Shop</a>
+        <a href="/pages/about" {% if template.name == 'page' and page.handle == 'about' %}class="active"{% endif %}>About</a>
+        <a href="/blogs/news" {% if template.name == 'blog' or template.name == 'article' %}class="active"{% endif %}>Blog</a>
+      </nav>
+
+      <div class="header-icons">
+        <div class="header-icon mobile-menu-toggle">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <line x1="3" y1="12" x2="21" y2="12" stroke-width="2"/>
+            <line x1="3" y1="6" x2="21" y2="6" stroke-width="2"/>
+            <line x1="3" y1="18" x2="21" y2="18" stroke-width="2"/>
+          </svg>
+        </div>
+        
+        <button class="header-icon" onclick="toggleSearch()" aria-label="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="M21 21l-4.35-4.35"/>
+          </svg>
+        </button>
+        
+        <a href="/cart" class="header-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="21" r="1"/>
+            <circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+          </svg>
+          <span class="cart-count" id="cart-icon-bubble">{{ cart.item_count }}</span>
+        </a>
+      </div>
+    </header>
+  </div>
+  
+  <!-- Search Popup -->
+  <div class="search-popup" id="searchPopup">
+    <div class="search-popup-content">
+      <button class="search-close" onclick="toggleSearch()" aria-label="Close search">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+      <form action="/search" method="get" class="search-popup-form">
+        <input type="search" 
+               name="q" 
+               placeholder="Search for sacred treasures..." 
+               autocomplete="off"
+               class="search-popup-input">
+        <button type="submit" class="search-popup-button">Search</button>
+      </form>
+    </div>
+  </div>
+</div>
 
 <script>
   function toggleSearch() {
@@ -281,7 +297,6 @@
     }
   }
   
-  // Close on escape key
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
       const popup = document.getElementById('searchPopup');
@@ -291,7 +306,6 @@
     }
   });
   
-  // Close on background click
   document.getElementById('searchPopup')?.addEventListener('click', function(e) {
     if (e.target === this) {
       toggleSearch();

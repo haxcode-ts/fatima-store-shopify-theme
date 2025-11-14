@@ -1,0 +1,240 @@
+{% comment %}
+  Customer Account Page
+  Save as: templates/customers/account.liquid
+{% endcomment %}
+
+<style>
+  .account-page {
+    padding: 80px 0;
+    min-height: 60vh;
+  }
+  
+  .account-header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  
+  .account-header h1 {
+    font-size: 42px;
+    margin-bottom: 10px;
+    color: var(--color-secondary);
+  }
+  
+  .account-header p {
+    color: #666;
+  }
+  
+  .account-content {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+  }
+  
+  .account-sidebar {
+    background: var(--color-bg-light);
+    padding: 30px;
+    border-radius: 8px;
+    height: fit-content;
+  }
+  
+  .account-nav {
+    list-style: none;
+  }
+  
+  .account-nav li {
+    margin-bottom: 15px;
+  }
+  
+  .account-nav a {
+    display: block;
+    padding: 10px 15px;
+    color: var(--color-secondary);
+    border-radius: 4px;
+    transition: all 0.3s;
+  }
+  
+  .account-nav a:hover,
+  .account-nav a.active {
+    background: var(--color-primary);
+    color: white;
+  }
+  
+  .account-main {
+    background: white;
+  }
+  
+  .account-section {
+    margin-bottom: 40px;
+  }
+  
+  .account-section h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: var(--color-secondary);
+  }
+  
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .info-item {
+    background: var(--color-bg-light);
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .info-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 5px;
+  }
+  
+  .info-value {
+    font-size: 16px;
+    color: var(--color-secondary);
+    font-weight: 500;
+  }
+  
+  .orders-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .orders-table th,
+  .orders-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  
+  .orders-table th {
+    background: var(--color-bg-light);
+    font-weight: 600;
+    color: var(--color-secondary);
+  }
+  
+  .order-status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  
+  .order-status.fulfilled {
+    background: #d4edda;
+    color: #155724;
+  }
+  
+  .order-status.pending {
+    background: #fff3cd;
+    color: #856404;
+  }
+  
+  .no-orders {
+    text-align: center;
+    padding: 60px 20px;
+    background: var(--color-bg-light);
+    border-radius: 8px;
+  }
+  
+  .no-orders h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: var(--color-secondary);
+  }
+  
+  @media (max-width: 968px) {
+    .account-content {
+      grid-template-columns: 1fr;
+    }
+    
+    .info-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="account-page">
+  <div class="container">
+    <div class="account-header">
+      <h1>My Account</h1>
+      <p>Welcome back, {{ customer.first_name }}!</p>
+    </div>
+    
+    <div class="account-content">
+      <aside class="account-sidebar">
+        <ul class="account-nav">
+          <li><a href="{{ routes.account_url }}" class="active">Dashboard</a></li>
+          <li><a href="{{ routes.account_addresses_url }}">Addresses</a></li>
+          <li><a href="{{ routes.account_logout_url }}">Logout</a></li>
+        </ul>
+      </aside>
+      
+      <div class="account-main">
+        <div class="account-section">
+          <h2>Account Details</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Name</div>
+              <div class="info-value">{{ customer.first_name }} {{ customer.last_name }}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Email</div>
+              <div class="info-value">{{ customer.email }}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Total Orders</div>
+              <div class="info-value">{{ customer.orders_count }}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Account Status</div>
+              <div class="info-value">Active</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="account-section">
+          <h2>Recent Orders</h2>
+          {% if customer.orders.size > 0 %}
+            <table class="orders-table">
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Total</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in customer.orders limit: 5 %}
+                  <tr>
+                    <td>#{{ order.name }}</td>
+                    <td>{{ order.created_at | date: "%B %d, %Y" }}</td>
+                    <td>
+                      <span class="order-status {{ order.fulfillment_status }}">
+                        {{ order.fulfillment_status | default: 'Pending' }}
+                      </span>
+                    </td>
+                    <td>{{ order.total_price | money }}</td>
+                    <td><a href="{{ order.customer_url }}" style="color: var(--color-primary);">View</a></td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% else %}
+            <div class="no-orders">
+              <h3>No orders yet</h3>
+              <p style="margin-bottom: 20px; color: #666;">Start shopping to see your orders here</p>
+              <a href="/collections/all" class="btn">Start Shopping</a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

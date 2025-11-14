@@ -1,0 +1,112 @@
+{% comment %}
+  Customer Registration Page
+  Save as: templates/customers/register.liquid
+{% endcomment %}
+
+<style>
+  .register-page {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 0;
+    background: var(--color-bg-light);
+  }
+  
+  .register-container {
+    background: white;
+    padding: 50px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    max-width: 450px;
+    width: 100%;
+  }
+  
+  .register-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .register-header h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: var(--color-secondary);
+  }
+  
+  .register-header p {
+    color: #666;
+    font-size: 15px;
+  }
+  
+  @media (max-width: 768px) {
+    .register-container {
+      padding: 30px 20px;
+      margin: 0 20px;
+    }
+  }
+</style>
+
+<div class="register-page">
+  <div class="register-container">
+    <div class="register-header">
+      <h1>Create Account</h1>
+      <p>Join our community of faithful believers</p>
+    </div>
+    
+    {% if form.errors %}
+      <div class="errors">
+        <ul>
+          {% for error in form.errors %}
+            <li>{{ error | capitalize }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+    
+    {% form 'create_customer' %}
+      <div class="form-group">
+        <label for="first-name">First Name</label>
+        <input type="text" 
+               name="customer[first_name]" 
+               id="first-name" 
+               autocomplete="given-name"
+               required>
+      </div>
+      
+      <div class="form-group">
+        <label for="last-name">Last Name</label>
+        <input type="text" 
+               name="customer[last_name]" 
+               id="last-name" 
+               autocomplete="family-name"
+               required>
+      </div>
+      
+      <div class="form-group">
+        <label for="customer-email">Email Address</label>
+        <input type="email" 
+               name="customer[email]" 
+               id="customer-email" 
+               autocomplete="email"
+               required>
+      </div>
+      
+      <div class="form-group">
+        <label for="customer-password">Password</label>
+        <input type="password" 
+               name="customer[password]" 
+               id="customer-password" 
+               autocomplete="new-password"
+               required>
+      </div>
+      
+      <div class="form-actions">
+        <button type="submit" class="btn">Create Account</button>
+      </div>
+      
+      <div class="form-links">
+        <a href="{{ routes.account_login_url }}">Already have an account? Sign In</a>
+      </div>
+    {% endform %}
+  </div>
+</div>
