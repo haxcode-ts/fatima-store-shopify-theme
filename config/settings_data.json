@@ -9,6 +9,8 @@
  */
 {
   "current": {
+    "favicon": "shopify://shop_images/Logo_Featuring_In_My_God_with_Tagline_2.svg",
+    "hero_image": "shopify://shop_images/Logo_Featuring_In_My_God_with_Tagline.png",
     "sections": {
       "announcement-bar": {
         "type": "announcement-bar",
