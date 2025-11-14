@@ -123,7 +123,7 @@
 
         <h1 class="product-title">{{ product.title }}</h1>
         <div class="product-price">{{ product.price | money }}</div>
-
+<!-- Start of Judge.me code --><div style='clear:both'></div><div id='judgeme_product_reviews' class='jdgm-widget jdgm-review-widget' data-product-title='{{ product.title | escape }}' data-id='{{ product.id }}' data-auto-install='false'>{{ product.metafields.judgeme.widget }}</div><!-- End of Judge.me code -->
         <div class="product-description">
           <div class="description-preview" id="descriptionPreview">
             {{ product.description | strip_html | truncatewords: 30 }}
