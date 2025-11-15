@@ -88,6 +88,12 @@
     background: none;
     border: none;
     padding: 0;
+    color: var(--color-secondary);
+    transition: color 0.3s;
+  }
+  
+  .header-icon:hover {
+    color: var(--color-primary);
   }
 
   .cart-count {
@@ -218,16 +224,16 @@
         {% if section.settings.logo %}
           <img src="{{ section.settings.logo | img_url: '60x' }}" alt="{{ shop.name }}" width="50" height="50">
         {% else %}
-          <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#C9A961" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M2 17L12 22L22 17" stroke="#C9A961" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M2 12L12 17L22 12" stroke="#C9A961" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-        {% endif %}
           <div class="header-logo-text">
             <h1>{{ section.settings.store_name | default: 'In My God' }}</h1>
             <p>{{ section.settings.tagline | default: 'From Jerusalem, With Blessings' }}</p>
           </div>
+        {% endif %}
       </a>
 
       <nav class="header-nav">
@@ -253,6 +259,13 @@
           </svg>
         </button>
         
+        <a href="{% if customer %}/account{% else %}/account/login{% endif %}" class="header-icon" aria-label="Account">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </a>
+        
         <a href="/cart" class="header-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="9" cy="21" r="1"/>
@@ -265,7 +278,6 @@
     </header>
   </div>
   
-  <!-- Search Popup -->
   <div class="search-popup" id="searchPopup">
     <div class="search-popup-content">
       <button class="search-close" onclick="toggleSearch()" aria-label="Close search">

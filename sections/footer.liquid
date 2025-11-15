@@ -148,18 +148,18 @@
       <div class="footer-column">
         <div class="footer-logo">
           {% if section.settings.logo %}
-            <img src="{{ section.settings.logo | img_url: '60x' }}" alt="{{ shop.name }}" width="50" height="50">
+            <img src="{{ section.settings.logo | img_url: '60x' }}" alt="{{ shop.name }}">
           {% else %}
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#C9A961" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M2 17L12 22L22 17" stroke="#C9A961" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M2 12L12 17L22 12" stroke="#C9A961" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
+            <div class="footer-logo-text">
+              <h3>{{ section.settings.store_name | default: 'In My God' }}</h3>
+              <p>{{ section.settings.tagline | default: 'From Jerusalem, With Blessings' }}</p>
+            </div>
           {% endif %}
-          <div class="footer-logo-text">
-            <h3>{{ section.settings.store_name | default: 'In My God' }}</h3>
-            <p>{{ section.settings.tagline | default: 'From Jerusalem, With Blessings' }}</p>
-          </div>
         </div>
         <p class="footer-description">
           {{ section.settings.description | default: 'Authentic Holy Land gifts handcrafted by Christian artisans in Jerusalem.' }}
